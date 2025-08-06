@@ -20,7 +20,8 @@ extern "C" {
  * 
  * @note The user just can use one d_p_adc_oneshot_cfg_t per a combination of adc_unit and adc_channels
  * Two configs with channels of the same unit in common are invalid arguments.
- * @note It have to be used just one time for a dp_adc_oneshot_cfg_handle_t
+ * @note It have to be used just one time for a dp_adc_oneshot_cfg_handle_t.
+ * If you kill your config handle, you will can use setup again
  * 
  * @return esp_err_t ESP_OK
  */
@@ -34,6 +35,7 @@ esp_err_t d_p_adc_oneshot_setup(d_p_adc_oneshot_cfg_handle_t config_handle);
  * 
  * @note This function have to be called after do the setup for the d_p_adc_oneshot_cfg_t
  * @note It have to be used just one time for a dp_adc_oneshot_cfg_handle_t
+ * If you kill your config handle, you will can use setup again
  * 
  * @return esp_err_t ESP_OK
  */

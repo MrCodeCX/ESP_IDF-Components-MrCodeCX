@@ -56,6 +56,8 @@ esp_err_t d_p_adc_oneshot_kill(d_p_adc_oneshot_cfg_handle_t config_handle)
 
     // Erase the private state
     config_handle->_private_init_state = false;
+    // Erase to pointer to the global handle, then the config will can be reused
+    config_handle->_private_pointer_to_adc_oneshot_handle = NULL;
 
     // Return
     return ESP_OK;
