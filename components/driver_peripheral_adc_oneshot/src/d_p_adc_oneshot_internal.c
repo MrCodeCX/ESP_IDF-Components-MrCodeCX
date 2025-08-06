@@ -5,7 +5,7 @@
  * INTERNAL HARDWARE FUNCTIONS
  */
 
-// SETUP
+// ------------------------------ SETUP HANDLE ------------------------------
 
 esp_err_t d_p_adc_oneshot_internal_setup_handle(adc_oneshot_unit_handle_t* adc_oneshot_handle, adc_unit_t adc_unit)
 {
@@ -25,6 +25,8 @@ esp_err_t d_p_adc_oneshot_internal_setup_handle(adc_oneshot_unit_handle_t* adc_o
     // Return
     return ESP_OK;
 }
+
+// ------------------------------ SETUP CHANNELS------------------------------
 
 esp_err_t d_p_adc_oneshot_internal_setup_channels(adc_oneshot_unit_handle_t adc_oneshot_handle, size_t n_channels, adc_channel_t *adc_channels)
 {
@@ -47,7 +49,7 @@ esp_err_t d_p_adc_oneshot_internal_setup_channels(adc_oneshot_unit_handle_t adc_
     return ESP_OK;
 }
 
-// KILL
+// ------------------------------ KILL ------------------------------
 
 esp_err_t d_p_adc_oneshot_internal_kill_handle(adc_oneshot_unit_handle_t *adc_oneshot_handle)
 {
@@ -64,7 +66,7 @@ esp_err_t d_p_adc_oneshot_internal_kill_handle(adc_oneshot_unit_handle_t *adc_on
     return ESP_OK;
 }
 
-// READ
+// ------------------------------ READ CHANNELS (INT LECTURES) ------------------------------
 
 esp_err_t d_p_adc_oneshot_internal_read_channels(adc_oneshot_unit_handle_t adc_oneshot_handle, size_t n_channels, adc_channel_t *adc_channels, int *lectures)
 {
@@ -77,6 +79,37 @@ esp_err_t d_p_adc_oneshot_internal_read_channels(adc_oneshot_unit_handle_t adc_o
         ESP_ERROR_CHECK(adc_oneshot_read(adc_oneshot_handle, adc_channels[i], (lectures + i)));
     }
 
+    // Return
+    return ESP_OK;
+}
+
+
+/**
+ * INTERNAL LOGIC FUNCTIONS
+ */
+
+// ------------------------------ CONVERSION LECTURE TO VOLTAGE ------------------------------
+
+float d_p_adc_oneshot_internal_lecture_to_voltage(int lecture)
+{
+    // Convert lecture to voltage with the user global macros
+    float voltage = lecture;
+    voltage = (voltage * D_P_ADC_ONESHOT_CHANNELS_VOLTAGE_MAX) / D_P_ADC_ONESHOT_CHANNELS_LECTURE_MAX;
+
+    // Return
+    return voltage;
+}
+
+// ------------------------------ CONVERSION ARRAY OF LECTURES TO ARRAY OF VOLTAGE ------------------------------
+
+esp_err_t d_p_adc_oneshot_internal_lectures_to_voltages(size_t n, int *lectures, float *voltages)
+{
+    // Convert each lecture to voltage
+    for (size_t i = 0; i < n; i++)
+    {
+        voltages[i] = d_p_adc_oneshot_internal_lecture_to_voltage(lectures[i]);
+    }
+    
     // Return
     return ESP_OK;
 }

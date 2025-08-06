@@ -5,12 +5,12 @@
  * INTERNAL MANAGE GLOBAL VARIABLES
  */
 
-// Global Handles
+// ------------------------------ GLOBAL HANDLES ------------------------------
 
 adc_oneshot_unit_handle_t d_p_adc_oneshot_handle_1 = NULL;
 adc_oneshot_unit_handle_t d_p_adc_oneshot_handle_2 = NULL;
 
-// Global States
+// ------------------------------ GLOBAL STATES ------------------------------
 
 bool d_p_adc_oneshot_handle_state_1 = false;
 bool d_p_adc_oneshot_handle_state_2 = false;
@@ -22,7 +22,7 @@ bool d_p_adc_oneshot_channels_state_2[D_P_ADC_ONESHOT_CONST_MAX_CHANNELS] = {fal
  * INTERNAL MANAGE FUNCTIONS
  */
 
-// SETUP VERIFY STATE
+// ------------------------------ SETUP VERIFY HANDLE STATE ------------------------------
 
 esp_err_t d_p_adc_oneshot_internal_manage_setup_verify_handle_state(d_p_adc_oneshot_cfg_handle_t config_handle)
 {
@@ -36,6 +36,8 @@ esp_err_t d_p_adc_oneshot_internal_manage_setup_verify_handle_state(d_p_adc_ones
     // Return
     return ESP_OK;
 }
+
+// ------------------------------ SETUP VERIFY CHANNELS STATE ------------------------------
 
 esp_err_t d_p_adc_oneshot_internal_manage_setup_verify_channels_state(d_p_adc_oneshot_cfg_handle_t config_handle)
 {
@@ -65,8 +67,7 @@ esp_err_t d_p_adc_oneshot_internal_manage_setup_verify_channels_state(d_p_adc_on
     return ESP_OK;
 }
 
-
-// REGISTER AND ERASE GLOBAL STATE
+// ------------------------------ REGISTER GLOBAL STATE ------------------------------
 
 esp_err_t d_p_adc_oneshot_internal_manage_register_global_state(d_p_adc_oneshot_cfg_handle_t config_handle)
 {
@@ -93,6 +94,8 @@ esp_err_t d_p_adc_oneshot_internal_manage_register_global_state(d_p_adc_oneshot_
     // Return
     return ESP_OK;
 }
+
+// ------------------------------ ERASE GLOBAL STATE ------------------------------
 
 esp_err_t d_p_adc_oneshot_internal_manage_erase_global_state(d_p_adc_oneshot_cfg_handle_t config_handle, bool *needed_handle)
 {

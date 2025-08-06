@@ -7,7 +7,7 @@
  * API FUNCTIONS
  */
 
-// SETUP
+// ------------------------------ SETUP ------------------------------
 
 esp_err_t d_p_adc_oneshot_setup(d_p_adc_oneshot_cfg_handle_t config_handle)
 {
@@ -40,7 +40,7 @@ esp_err_t d_p_adc_oneshot_setup(d_p_adc_oneshot_cfg_handle_t config_handle)
     return ESP_OK;
 }
 
-// KILL
+// ------------------------------ KILL ------------------------------
 
 esp_err_t d_p_adc_oneshot_kill(d_p_adc_oneshot_cfg_handle_t config_handle)
 {
@@ -63,16 +63,25 @@ esp_err_t d_p_adc_oneshot_kill(d_p_adc_oneshot_cfg_handle_t config_handle)
     return ESP_OK;
 }
 
-// READ
+// ------------------------------ READ ------------------------------
 
-esp_err_t d_p_adc_oneshot_read(d_p_adc_oneshot_cfg_handle_t config_handle, int *lectures)
+esp_err_t d_p_adc_oneshot_read(d_p_adc_oneshot_cfg_handle_t config_handle, float *voltages)
 {
     // State Verification, Verify if the unit has been previous initialized (strong)
     if(config_handle->_private_init_state == false) return ESP_ERR_INVALID_STATE;
 
+    // Create temporary lectures array
+    int* lectures = (int*) malloc(config_handle->n_channels * sizeof(int));
+
     // Read the channels to lectures
     ESP_ERROR_CHECK(d_p_adc_oneshot_internal_read_channels(*config_handle->_private_pointer_to_adc_oneshot_handle, config_handle->n_channels, config_handle->adc_channels, lectures));
 
+    // Convert the lectures to voltages, and override the voltages array
+    d_p_adc_oneshot_internal_lectures_to_voltages(config_handle->n_channels, lectures, voltages);
+
+    // Free memory
+    free(lectures);
+    
     // Return
     return ESP_OK;
 }

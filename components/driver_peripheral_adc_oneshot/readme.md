@@ -1,7 +1,7 @@
 ### DRIVER PERIPHERAL ADC ONESHOT by MrCodeCX (Misael Fernandez Prada)
 
 ### BRIEF
-    A COMPLETE EASY MANAGER FOR MULTIPLE ADC ONESHOTS LECTURES
+    A COMPLETE EASY MANAGER FOR MULTIPLE ADC ONESHOTS LECTURES DEFINED BY A CONFIG HANDLE
 
 ### COMPONENT DEPENDS
     esp_adc from the espressif oficial components
@@ -65,8 +65,8 @@ In this case the driver has 100% easy deterministic workflow, dosent use task fu
     d_p_adc_oneshot_setup(&adc_oneshot_config);
 
     // Read
-    int lectures[3];
-    d_p_adc_oneshot_read(&adc_oneshot_config, lectures);
+    float voltages[3];
+    d_p_adc_oneshot_read(&adc_oneshot_config, voltages);
 
     // Kill
     d_p_adc_oneshot_kill(&adc_oneshot_config);

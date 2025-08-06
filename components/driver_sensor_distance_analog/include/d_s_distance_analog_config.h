@@ -1,14 +1,29 @@
 #pragma once
 #include <driver_peripheral_adc_oneshot.h> 
-#include <d_s_distance_analog_conversions.h>
 
-// GLOBAL CONFIG THE ANALOG UNIT AND CHANNELS FOR THE SENSORS IN d_s_distance_analog_config.c
-extern d_p_adc_oneshot_cfg_t d_s_distance_analog_adc_oneshot_config;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-// If you want you can change the global config for the sensors during execution
-// But you just can have one at time, then before change to other, kill the previous config
 
-#define D_S_DISTANCE_ANALOG_N_SENSORS 3
+/**
+ * CONFIG STRUCTURES, to be used by the user, as part of the api, are defined her for global use of internal and api functions
+ */
 
-// OVERRIDE -> THIS MACRO TO CALL YOUR VOLTAGE TO DISTANCE CONVERSION FUNCTION (volts to cm)
-#define D_S_DISTANCE_ANALOG_VOLTAGE_TO_DISTANCE(x) d_s_convert_distance_digital_rz60s(x)
+// ------------------------------ Function Conversion (Voltage to Distance) structure ------------------------------
+
+typedef float (*d_s_distance_analog_conversion) (float);
+
+// ------------------------------ THE CONFIG HANDLE ------------------------------
+
+typedef struct {
+    d_p_adc_oneshot_cfg_t adc_oneshot_cfg;                  // ADC ONESHOT CONFIG UNIT, provided by the user, to manage the adc sensors
+    d_s_distance_analog_conversion function_conversion;     // Function Conversion Voltage to Distance provided by the user
+} d_s_distance_analog_cfg_t;
+
+typedef d_s_distance_analog_cfg_t* d_s_distance_analog_cfg_handle_t;
+
+
+#ifdef __cplusplus
+}
+#endif
