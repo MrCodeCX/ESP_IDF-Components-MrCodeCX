@@ -70,17 +70,14 @@ esp_err_t d_p_adc_oneshot_read(d_p_adc_oneshot_cfg_handle_t config_handle, float
     // State Verification, Verify if the unit has been previous initialized (strong)
     if(config_handle->_private_init_state == false) return ESP_ERR_INVALID_STATE;
 
-    // Create temporary lectures array
-    int* lectures = (int*) malloc(config_handle->n_channels * sizeof(int));
+    // Create temporary lectures array in the stack (more efficient than heap, and never satures the memory because the max size is short)
+    int lectures[D_P_ADC_ONESHOT_CONST_MAX_CHANNELS];
 
     // Read the channels to lectures
     ESP_ERROR_CHECK(d_p_adc_oneshot_internal_read_channels(*config_handle->_private_pointer_to_adc_oneshot_handle, config_handle->n_channels, config_handle->adc_channels, lectures));
 
     // Convert the lectures to voltages, and override the voltages array
     d_p_adc_oneshot_internal_lectures_to_voltages(config_handle->n_channels, lectures, voltages);
-
-    // Free memory
-    free(lectures);
     
     // Return
     return ESP_OK;

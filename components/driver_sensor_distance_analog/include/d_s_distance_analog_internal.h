@@ -19,4 +19,4 @@
  * 
  * @return esp_err_t ESP_OK
  */
-esp_err_t d_s_distance_analog_internal_voltages_to_distances(d_s_distance_analog_conversion f_conversion, size_t n, float *voltages, float* distances);
+esp_err_t d_s_distance_analog_internal_voltages_to_distances(d_s_distance_analog_conversion_t f_conversion, size_t n, float *voltages, float* distances);

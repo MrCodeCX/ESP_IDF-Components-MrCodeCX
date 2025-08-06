@@ -1,23 +1,3 @@
-DRIVER SENSOR DISTANCE ANALOG
-
-A SIMPLE API FOR MANAGE MULTIPLE SENSORS DISTANCE WITH ANALOG OUTPUT
-
-This driver depends of the driver_peripheral_adc_oneshot from MrCodeCX components
-
-The default flag for out of range and dead zone lectures is -1
-
-The user can override the D_S_DISTANCE_ANALOG_VOLTAGE_TO_DISTANCE macro to use othe conversion function from d_s_distance_analog_conversions, or his own conversion function
-
-The user can override the global object d_s_distance_analog_adc_oneshot_config during execution to create a new sensor config, but first have to kill the previous config if that previous config has been setup
-
-To config edit the d_s_distance_analog_config.h and d_s_distance_analog_config.c files
-All the config is needed
-
-THIS DRIVER ALWAYS PASS DIRECTLY THE VOLTAGE TO THE CONVERSION FUNCTION, AND THE VOLTAGE ALLOWED IS FROM 0 to 3.3V, 
-IS NEVER NEEDED TO TOUCH THE CONFIGURATION OF THE DEPENDENCY driver_peripheral_adc_oneshot, at least you were using an esp32 variant (not classic)
-Of course you also can use this driver to manage sensor distances with digital output, it isnt neceesay, and you can use other drivers specific for digital sensors (more efficient), but maybe for easy integration of multiples distances sensors, and etc, it could be a better option
-Is for that reazon that the api provide conversion functions for some digital sensors
-
 ### DRIVER SENSOR DISTANCE ANALOG by MrCodeCX (Misael Fernandez Prada)
 
 ### BRIEF
@@ -33,12 +13,20 @@ Is for that reazon that the api provide conversion functions for some digital se
 
 ### DESCRIPTION
 
-For multiple lectures this driver is more stable than adc_continuous from espressif because, the adc_continuous works bad with 3 channels or more in esp32 classic.
+The drivers provides a simple deterministic api, just understand how to create your config handle, and provide your conversion function, and the driver will do all the rest with his setup, read, and kill functions.
 
-This driver use global handles and global states, manages evrything related to them by itself
-Then the user just have to call to the setup function with his own config of dp_adc_oneshot_cfg_t, and the driver will config and manage this
+The user can use multiple config handles at the same time, the one restriction is two config handles never can have channels of the same unit in common.
 
-The user can have only one config per combination of adc unit and adc channels, if two configs have common channels in an adc unit, its a fatal error
+To create a config handle, the user have to provide an adc oneshot config instance, with his own adc unit, number of channels, and adc channels. Note that a config handle can only manage sensors of one adc unit, because only have one adc oneshot config element.
+
+To provide the d_s_distance_analog_conversion_t f_conversion you can use one of the provided by the driver or just create a function of the shape float f_conversion (float), it will recieve a voltage (from 0 to 3.3V) and have to return the respectly distance (cm).
+
+The default flag for d_s_distance_analog_conversion_t out of range and dead zone lectures is -1
+
+Is neever needed to touch the configuration of the dependency driver_peripheral_adc_oneshot, at least you were using an esp32 variant (not classic)
+
+Of course you also can use this driver to manage sensor distances with digital output, it isnt neceesay, and you can use other drivers specific for digital sensors (more efficient), but maybe for easy integration of multiples distances sensors, and etc, it could be a better option
+Is for that reazon that the api provide conversion functions for some digital sensors
 
 
 ### PHILOSOPHY STRUCTURE (API AND INTERNAL)
@@ -67,31 +55,32 @@ Then, all the program will be stopped if at least one of this functions give an 
 To do easier the deterministic understand of the aplications executions, the driver almost never use task functions, or interupt service routines (ISR).
 But if one function do, it always have a simple deterministic logic, for example with vTaskDelay
 
-In this case the driver has 100% easy deterministic workflow, dosent use task functions or interrupt servie routines.
+In this case the driver has 100% easy deterministic workflow, dosent use task functions or interrupt service routines.
 
 
 ### WORKFLOW API (EXAMPLE)
 
-    // Optionally edit the d_p_adc_oneshot_config.h to setup the global macros, like voltage attenuated, etc
-
     // Create your own config
-    d_p_adc_oneshot_cfg_t adc_oneshot_config = {
-        .adc_unit = ADC_UNIT_1,
-        .n_channels = 3,
-        .adc_channels = {D_P_ADC_ONESHOT_CONST_GPIO_35_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_GPIO_34_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_GPIO_33_ADC_CHANNEL}
+    d_s_distance_analog sensor_config = {
+        .adc_oneshot_cfg = (d_p_adc_oneshot_cfg_t) {
+            .adc_unit = ADC_UNIT_1,
+            .n_channels = 3,
+            .adc_channels = {D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_35_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_34_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_33_ADC_CHANNEL}
+        },
+        .f_conversion = d_s_distance_analog_conversion_sharp_gp2y0a21
     }
 
     // Setup
-    d_p_adc_oneshot_setup(&adc_oneshot_config);
+    d_s_distance_analog_setup(&sensor_config);
 
     // Read
-    int lectures[3];
-    d_p_adc_oneshot_read(&adc_oneshot_config, lectures);
+    float distances[3];
+     d_s_distance_analog_read_distances(&sensor_config, distances);
 
     // Kill
-    d_p_adc_oneshot_kill(&adc_oneshot_config);
+    d_s_distance_analog_kill(&sensor_config);
 
     // You can repeat the workflow, optionally resetting up a change config like this, or creating other configs, you can have various config setted up at the same time
-    adc_oneshot_config.n_channels = 2;
-    adc_oneshot_config.adc_channels = {D_P_ADC_ONESHOT_CONST_GPIO_32_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_GPIO_37_ADC_CHANNEL};
+    sensor_config.adc_oneshot_cfg.n_channels = 2;
+    sensor_config.adc_oneshot_cfg.adc_channels = {D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_35_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_34_ADC_CHANNEL};
 

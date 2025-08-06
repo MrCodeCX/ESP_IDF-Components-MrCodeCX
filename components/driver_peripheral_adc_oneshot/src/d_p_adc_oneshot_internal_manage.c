@@ -78,7 +78,6 @@ esp_err_t d_p_adc_oneshot_internal_manage_register_global_state(d_p_adc_oneshot_
         {
             d_p_adc_oneshot_channels_state_1[config_handle->adc_channels[i]] = true;
         }
-        
     }
 
     // Register the global state for hanfle 2 if it is (without verifications)
@@ -88,7 +87,6 @@ esp_err_t d_p_adc_oneshot_internal_manage_register_global_state(d_p_adc_oneshot_
         {
             d_p_adc_oneshot_channels_state_2[config_handle->adc_channels[i]] = true;
         }
-        
     }
 
     // Return

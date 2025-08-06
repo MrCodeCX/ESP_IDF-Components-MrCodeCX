@@ -47,7 +47,7 @@ Then, all the program will be stopped if at least one of this functions give an 
 To do easier the deterministic understand of the aplications executions, the driver almost never use task functions, or interupt service routines (ISR).
 But if one function do, it always have a simple deterministic logic, for example with vTaskDelay
 
-In this case the driver has 100% easy deterministic workflow, dosent use task functions or interrupt servie routines.
+In this case the driver has 100% easy deterministic workflow, dosent use task functions or interrupt service routines.
 
 
 ### WORKFLOW API (EXAMPLE)
@@ -58,7 +58,7 @@ In this case the driver has 100% easy deterministic workflow, dosent use task fu
     d_p_adc_oneshot_cfg_t adc_oneshot_config = {
         .adc_unit = ADC_UNIT_1,
         .n_channels = 3,
-        .adc_channels = {D_P_ADC_ONESHOT_CONST_GPIO_35_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_GPIO_34_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_GPIO_33_ADC_CHANNEL}
+        .adc_channels = {D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_35_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_34_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_33_ADC_CHANNEL}
     }
 
     // Setup

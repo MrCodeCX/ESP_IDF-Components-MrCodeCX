@@ -7,7 +7,7 @@
 
 // ------------------------------ SETUP HANDLE ------------------------------
 
-esp_err_t d_p_adc_oneshot_internal_setup_handle(adc_oneshot_unit_handle_t* adc_oneshot_handle, adc_unit_t adc_unit)
+esp_err_t d_p_adc_oneshot_internal_setup_handle(adc_oneshot_unit_handle_t *adc_oneshot_handle, adc_unit_t adc_unit)
 {
     // State Verification, Verify if the unit handle dosent exits (weak)
     if(adc_oneshot_handle != NULL) return ESP_ERR_INVALID_STATE;
