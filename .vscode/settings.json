@@ -41,6 +41,8 @@
         "d_s_distance_analog_config.h": "c",
         "driver_sensor_distance_analog.h": "c",
         "d_s_distance_analog_conversions.h": "c",
-        "d_s_distance_analog_internal.h": "c"
+        "d_s_distance_analog_internal.h": "c",
+        "d_p_adc_oneshot_global.h": "c",
+        "d_p_adc_oneshot_internal_manage.h": "c"
     }
 }

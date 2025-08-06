@@ -1,30 +1,60 @@
-DRIVER PERIPHERAL ADC ONESHOT
+DRIVER PERIPHERAL ADC ONESHOT by MrCodeCX (Misael Fernandez Prada)
 
-A COMPLETE EASY MANAGER FOR MULTIPLE ADC ONESHOTS LECTURES
+BRIEF
+    A COMPLETE EASY MANAGER FOR MULTIPLE ADC ONESHOTS LECTURES
 
-This driver depends of esp_adc from the espressif oficial components
+COMPONENT DEPENDS
+    esp_adc from the espressif oficial components
 
-This driver is more stable than adc_continuous from espressif because, the adc_continuous works bad with 3 channels or more in esp32
+COMPATIBLE
+    Language: C / C++
+    Documentation: Doxygen
 
-This driver use global handles, the driver manages itself every handle realated to the adc units and handles
+
+DESCRIPTION
+
+For multiple lectures this driver is more stable than adc_continuous from espressif because, the adc_continuous works bad with 3 channels or more in esp32 classic.
+
+This driver use global handles and global states, manages evrything related to them by itself
 Then the user just have to call to the setup function with his own config of dp_adc_oneshot_cfg_t, and the driver will config and manage this
 
-The user can have only one config per combination of adc unit and adc channels, if two configs have common channels in an adc unit, its an error
-
-ADC 1 CHANNELS PER PIN
-ADC1_CH0	GPIO 36
-ADC1_CH1	GPIO 37
-ADC1_CH2	GPIO 38
-ADC1_CH3	GPIO 39
-ADC1_CH4	GPIO 32
-ADC1_CH5	GPIO 33
-ADC1_CH6	GPIO 34
-ADC1_CH7	GPIO 35
+The user can have only one config per combination of adc unit and adc channels, if two configs have common channels in an adc unit, its a fatal error
 
 
-WORKFLOW API
+FILOSOFY STRUCTURE (API AND INTERNAL)
 
-// CONFIG
+The functions are divided in api functions, and internal functions
+
+The api functions will be under the name component_api_function
+The internal functions will be under the name component_internal_function
+
+The user is just recomended to use the api functions, no one internal function is included by default when includind the component header
+This is because the internal functions depends of low level logic and macros, and usually global memory objects
+
+FILOSOFY ERROR (ROBUST)
+
+A simple function is one who return a direct value, are usually used to transform simple data (example: map, pow, etc), etc
+A complex function, do more, and if it have to return a value, this is returned by references at parameters, return esp_err_t.
+
+The function_x first do all his own verifications (if are needed), if one give an error, the function will stop and return the error code
+
+If the function_x pass the verifications, it can continue with his normal execution.
+If the esecution includes calls to other functions a, b, c ..., the functions will be called with ESP_ERROR_CHECK(function_a())
+Then, all the program will be stopped if at least one of this functions give an error
+
+FILOSOFY WORKFLOW-EXECUTION (SIMPLE)
+
+To do easier the deterministic understand of the aplications executions, the driver almost never use task functions, or interupt service routines (ISR).
+But if one function do, it always have a simple deterministic logic, for example with vTaskDelay
+
+In this case the driver has 100% easy deterministic workflow, dosent use task functions or interrupt servie routines.
+
+
+WORKFLOW API (EXAMPLE)
+
+// Optionally edited the d_p_adc_oneshot_config.h to setup the global macros, like voltage attenuated, etc
+
+// Create your own config
 d_p_adc_oneshot_cfg_t adc_oneshot_config = {
     .adc_unit = ADC_UNIT_1,
     .n_channels = 3,
