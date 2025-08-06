@@ -51,22 +51,27 @@ In this case the driver has 100% easy deterministic workflow, dosent use task fu
 
 
 ### WORKFLOW API (EXAMPLE)
-    
+
     // Optionally edit the d_p_adc_oneshot_config.h to setup the global macros, like voltage attenuated, etc
 
     // Create your own config
     d_p_adc_oneshot_cfg_t adc_oneshot_config = {
         .adc_unit = ADC_UNIT_1,
         .n_channels = 3,
-        .adc_channels = {ADC_CHANNELS_0, ADC_CHANNELS_1, ADC_CHANNEL_2}
+        .adc_channels = {D_P_ADC_ONESHOT_CONST_GPIO_35_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_GPIO_34_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_GPIO_33_ADC_CHANNEL}
     }
 
-    // SETUP
+    // Setup
     d_p_adc_oneshot_setup(&adc_oneshot_config);
 
-    // READ
+    // Read
     int lectures[3];
     d_p_adc_oneshot_read(&adc_oneshot_config, lectures);
 
-    // KILL
+    // Kill
     d_p_adc_oneshot_kill(&adc_oneshot_config);
+
+    // You can repeat the workflow, optionally resetting up a change config like this, or creating other configs, you can have various config setted up at the same time
+    adc_oneshot_config.n_channels = 2;
+    adc_oneshot_config.adc_channels = {D_P_ADC_ONESHOT_CONST_GPIO_32_ADC_CHANNEL, D_P_ADC_ONESHOT_CONST_GPIO_37_ADC_CHANNEL};
+
