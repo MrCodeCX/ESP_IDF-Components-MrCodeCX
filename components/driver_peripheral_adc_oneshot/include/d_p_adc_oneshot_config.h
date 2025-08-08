@@ -7,34 +7,38 @@ extern "C" {
 
 
 /**
- * GLOBAL CONSTANT MACROS ESP32 Classic (Dont touch it, at least you were using a esp32 variant)
+ * GLOBAL CONSTANT MACROS ESP32 Classic (Dont touch it, at least you were using a esp32 variant, in that case add a similar template for your target)
  */
 
-#define D_P_ADC_ONESHOT_CONST_MAX_CHANNELS 10
+#if CONFIG_IDF_TARGET_ESP32
 
-// ------------------------------ ADC UNIT 1 (ESP32 CLASSIC) ------------------------------
+    #define D_P_ADC_ONESHOT_CONST_MAX_CHANNELS 10
 
-#define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_39_ADC_CHANNEL ADC_CHANNEL_3
-#define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_38_ADC_CHANNEL ADC_CHANNEL_2
-#define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_37_ADC_CHANNEL ADC_CHANNEL_1
-#define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_36_ADC_CHANNEL ADC_CHANNEL_0
-#define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_35_ADC_CHANNEL ADC_CHANNEL_7
-#define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_34_ADC_CHANNEL ADC_CHANNEL_6
-#define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_33_ADC_CHANNEL ADC_CHANNEL_5
-#define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_32_ADC_CHANNEL ADC_CHANNEL_4
+    // ------------------------------ ADC UNIT 1 (ESP32 CLASSIC) ------------------------------
 
-// ------------------------------ ADC UNIT 2 (ESP32 CLASSIC) ------------------------------
+    #define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_39_ADC_CHANNEL ADC_CHANNEL_3
+    #define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_38_ADC_CHANNEL ADC_CHANNEL_2
+    #define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_37_ADC_CHANNEL ADC_CHANNEL_1
+    #define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_36_ADC_CHANNEL ADC_CHANNEL_0
+    #define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_35_ADC_CHANNEL ADC_CHANNEL_7
+    #define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_34_ADC_CHANNEL ADC_CHANNEL_6
+    #define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_33_ADC_CHANNEL ADC_CHANNEL_5
+    #define D_P_ADC_ONESHOT_CONST_ADC_1_GPIO_32_ADC_CHANNEL ADC_CHANNEL_4
 
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_27_ADC_CHANNEL ADC_CHANNEL_7
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_26_ADC_CHANNEL ADC_CHANNEL_9
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_25_ADC_CHANNEL ADC_CHANNEL_8
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_15_ADC_CHANNEL ADC_CHANNEL_3
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_14_ADC_CHANNEL ADC_CHANNEL_6
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_13_ADC_CHANNEL ADC_CHANNEL_4
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_12_ADC_CHANNEL ADC_CHANNEL_5
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_4_ADC_CHANNEL ADC_CHANNEL_0
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_2_ADC_CHANNEL ADC_CHANNEL_2
-#define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_0_ADC_CHANNEL ADC_CHANNEL_1
+    // ------------------------------ ADC UNIT 2 (ESP32 CLASSIC) ------------------------------
+
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_27_ADC_CHANNEL ADC_CHANNEL_7
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_26_ADC_CHANNEL ADC_CHANNEL_9
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_25_ADC_CHANNEL ADC_CHANNEL_8
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_15_ADC_CHANNEL ADC_CHANNEL_3
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_14_ADC_CHANNEL ADC_CHANNEL_6
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_13_ADC_CHANNEL ADC_CHANNEL_4
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_12_ADC_CHANNEL ADC_CHANNEL_5
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_4_ADC_CHANNEL ADC_CHANNEL_0
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_2_ADC_CHANNEL ADC_CHANNEL_2
+    #define D_P_ADC_ONESHOT_CONST_ADC_2_GPIO_0_ADC_CHANNEL ADC_CHANNEL_1
+
+#endif
 
 
 /**
@@ -48,7 +52,7 @@ typedef struct {
     size_t n_channels;                                                      // N CHANNELS
     adc_oneshot_unit_handle_t* _private_pointer_to_adc_oneshot_handle;      // PRIVATE POINTER TO ADC HANDLE
     bool _private_init_state;                                               // PRIVATE STATE FOR THIS CONFIG
-    adc_channel_t adc_channels[];                                           // ADC CHANNELS (Used at end of the structure for compiler optimization)
+    adc_channel_t adc_channels[D_P_ADC_ONESHOT_CONST_MAX_CHANNELS];         // ADC CHANNELS
 } d_p_adc_oneshot_cfg_t;
 
 typedef d_p_adc_oneshot_cfg_t* d_p_adc_oneshot_cfg_handle_t;

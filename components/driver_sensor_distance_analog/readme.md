@@ -61,7 +61,7 @@ In this case the driver has 100% easy deterministic workflow, dosent use task fu
 ### WORKFLOW API (EXAMPLE)
 
     // Create your own config
-    d_s_distance_analog sensor_config = {
+    d_s_distance_analog_cfg_t sensor_config = {
         .adc_oneshot_cfg = (d_p_adc_oneshot_cfg_t) {
             .adc_unit = ADC_UNIT_1,
             .n_channels = 3,

@@ -10,7 +10,7 @@
 esp_err_t d_p_adc_oneshot_internal_setup_handle(adc_oneshot_unit_handle_t *adc_oneshot_handle, adc_unit_t adc_unit)
 {
     // State Verification, Verify if the unit handle dosent exits (weak)
-    if(adc_oneshot_handle != NULL) return ESP_ERR_INVALID_STATE;
+    if(*adc_oneshot_handle != NULL) return ESP_ERR_INVALID_STATE;
 
     // Create the unit config
     adc_oneshot_unit_init_cfg_t handle_config = {
@@ -54,7 +54,7 @@ esp_err_t d_p_adc_oneshot_internal_setup_channels(adc_oneshot_unit_handle_t adc_
 esp_err_t d_p_adc_oneshot_internal_kill_handle(adc_oneshot_unit_handle_t *adc_oneshot_handle)
 {
     // State Verification, Verify if the unit handle exits (weak)
-    if(adc_oneshot_handle == NULL) return ESP_ERR_INVALID_STATE;
+    if(*adc_oneshot_handle == NULL) return ESP_ERR_INVALID_STATE;
 
     // Kill the unit handle
     ESP_ERROR_CHECK(adc_oneshot_del_unit(*adc_oneshot_handle));

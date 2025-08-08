@@ -15,9 +15,13 @@ extern "C" {
 
 float d_s_distance_analog_conversion_sharp_gp2y0a21(float voltage);
 
-// ------------------------------ RZ60S (DIGITAL) ------------------------------
+// ------------------------------ SIMPLE DIGITAL ------------------------------
 
-float d_s_distance_analog_conversion_rz60s(float voltage);
+float d_s_distance_analog_conversion_simple_digital(float voltage);
+
+// ------------------------------ SIMPLE VOLTAGE ------------------------------
+
+float d_s_distance_analog_conversion_simple_voltage(float voltage);
 
 
 #ifdef __cplusplus

@@ -43,7 +43,7 @@ esp_err_t d_p_adc_oneshot_internal_manage_setup_verify_channels_state(d_p_adc_on
 {
     // Parameters Verification, Verify if the adc_unit is valid and if the number of channels is valid
     if(config_handle->adc_unit != ADC_UNIT_1 && config_handle->adc_unit != ADC_UNIT_2) return ESP_ERR_INVALID_ARG;
-    if(config_handle->n_channels <= 0) return ESP_ERR_INVALID_ARG;
+    if(config_handle->n_channels > D_P_ADC_ONESHOT_CONST_MAX_CHANNELS) return ESP_ERR_INVALID_ARG;
 
     // State Verification, Verify if global channels are uninitialized, with the global states (strong), for handle 1 if it is
     if(config_handle->adc_unit == ADC_UNIT_1) {

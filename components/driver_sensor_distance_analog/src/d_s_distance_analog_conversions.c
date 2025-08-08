@@ -16,11 +16,18 @@ float d_s_distance_analog_conversion_sharp_gp2y0a21(float voltage)
     return distance;
 }
 
-// ------------------------------ RZ60S (DIGITAL) ------------------------------
+// ------------------------------ SIMPLE DIGITAL ------------------------------
 
-float d_s_distance_analog_conversion_rz60s(float voltage)
+float d_s_distance_analog_conversion_simple_digital(float voltage)
 {
     float distance = -1;
-    if(voltage > D_P_ADC_ONESHOT_CHANNELS_VOLTAGE_MAX / 2) distance = 10;
+    if(voltage > D_P_ADC_ONESHOT_CHANNELS_VOLTAGE_MAX * 0.25) distance = 10;
     return distance;
+}
+
+// ------------------------------ SIMPLE VOLTAGE ------------------------------
+
+float d_s_distance_analog_conversion_simple_voltage(float voltage)
+{
+    return voltage;
 }
