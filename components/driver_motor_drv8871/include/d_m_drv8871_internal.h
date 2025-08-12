@@ -6,6 +6,10 @@
 #define D_M_DRV8871_PWM_MAX 100
 
 
+/**
+ * INTERNAL HARDWARE FUNCTIONS
+ */
+
 // INTERNAL LOGIC
 
 /**
